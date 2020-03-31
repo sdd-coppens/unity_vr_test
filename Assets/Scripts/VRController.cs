@@ -67,13 +67,14 @@ public class VRController : MonoBehaviour
 
         // if not moving
         //if (m_MoveValue.axis.magnitude == 0)
-        if (m_MovePress.GetStateUp(SteamVR_Input_Sources.RightHand))
+        if (m_MovePress.GetStateUp(SteamVR_Input_Sources.Any))
         {
                 m_Speed = 0;
         }
 
         // if button pressed
-        if (m_MovePress.GetStateDown(SteamVR_Input_Sources.RightHand))
+        // if (m_MovePress.GetStateDown(SteamVR_Input_Sources.RightHand))
+        if (m_MovePress.state)
         {
             // add, clamp
             m_Speed += m_MoveValue.axis.magnitude * m_Sensitivity;
@@ -81,10 +82,11 @@ public class VRController : MonoBehaviour
 
             // orientation
             movement += orientation * (m_Speed * Vector3.forward);
-
-            // grativty
-            movement.y -= m_Gravity * Time.deltaTime;
         }
+
+        // grativty
+        movement.y -= m_Gravity * Time.deltaTime;
+        //}
         // apply
         m_CharacterController.Move(movement * Time.deltaTime);
     }

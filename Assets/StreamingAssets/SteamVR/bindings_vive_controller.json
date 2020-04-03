@@ -90,8 +90,17 @@
             },
             {
                "inputs" : {
+                  "position" : {
+                     "output" : "/actions/default/in/touchpadpositionleft"
+                  }
+               },
+               "mode" : "trackpad",
+               "path" : "/user/hand/left/input/trackpad"
+            },
+            {
+               "inputs" : {
                   "click" : {
-                     "output" : "/actions/default/in/snapturnbutton"
+                     "output" : "/actions/default/in/teleport"
                   }
                },
                "mode" : "button",
@@ -100,16 +109,7 @@
             {
                "inputs" : {
                   "position" : {
-                     "output" : "/actions/default/in/touchpadposition"
-                  }
-               },
-               "mode" : "trackpad",
-               "path" : "/user/hand/left/input/trackpad"
-            },
-            {
-               "inputs" : {
-                  "position" : {
-                     "output" : "/actions/default/in/touchpadposition"
+                     "output" : "/actions/default/in/touchpadpositionright"
                   }
                },
                "mode" : "trackpad",

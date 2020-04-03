@@ -81,11 +81,11 @@ namespace Valve.VR
             }
         }
         
-        public virtual SteamVR_Action_Vector2 TouchPadPosition
+        public virtual SteamVR_Action_Vector2 TouchPadPositionLeft
         {
             get
             {
-                return SteamVR_Actions.default_TouchPadPosition;
+                return SteamVR_Actions.default_TouchPadPositionLeft;
             }
         }
         
@@ -94,6 +94,14 @@ namespace Valve.VR
             get
             {
                 return SteamVR_Actions.default_SnapTurnButton;
+            }
+        }
+        
+        public virtual SteamVR_Action_Vector2 TouchPadPositionRight
+        {
+            get
+            {
+                return SteamVR_Actions.default_TouchPadPositionRight;
             }
         }
         

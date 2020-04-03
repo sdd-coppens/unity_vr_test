@@ -14,13 +14,22 @@ public class VRController : MonoBehaviour
     public SteamVR_Action_Boolean m_RotatePress = null;
     public SteamVR_Action_Boolean m_MovePress = null;
     public SteamVR_Action_Vector2 m_MoveValue = null;
-    
+    public SteamVR_Action_Vector2 m_RotateValue = null;
+
+    public Vector3 place;
     private float m_Speed = 0.0f;
 
     private CharacterController m_CharacterController = null;
-    private Transform m_CameraRig = null;
+    public Transform m_CameraRig = null;
     private Transform m_Head = null;
 
+    
+    private void FixedUpdate()
+    {
+        place = new Vector3(m_Head.transform.localPosition.x, 0, m_Head.transform.localPosition.z);
+        m_CharacterController.center = place;
+        //m_CameraRig.localPosition.Set(place.x, place.y, place.z);
+    }
     private void Awake()
     {
         m_CharacterController = GetComponent<CharacterController>();
@@ -37,6 +46,7 @@ public class VRController : MonoBehaviour
         HandleHeight();
         CalculateMovement();
         SnapRotation();
+        FixedUpdate();
     }
 
     private void HandleHeight()
@@ -60,33 +70,28 @@ public class VRController : MonoBehaviour
 
     private void CalculateMovement()
     {
-        
-            // figure out movement orientation
-            Quaternion orientation = CalculateOrientation();
-            Vector3 movement = Vector3.zero;
+        // figure out movement orientation
+        Quaternion orientation = CalculateOrientation();
+        Vector3 movement = Vector3.zero;
 
         // if not moving
-        //if (m_MoveValue.axis.magnitude == 0)
-        if (m_MovePress.GetStateUp(SteamVR_Input_Sources.Any))
+        if (m_MoveValue.axis.magnitude == 0)
+        //if (m_MovePress.GetStateUp(SteamVR_Input_Sources.Any))
         {
-                m_Speed = 0;
+            m_Speed = 0;
         }
 
         // if button pressed
-        // if (m_MovePress.GetStateDown(SteamVR_Input_Sources.RightHand))
-        if (m_MovePress.state)
-        {
-            // add, clamp
-            m_Speed += m_MoveValue.axis.magnitude * m_Sensitivity;
-            m_Speed = Mathf.Clamp(m_Speed, -m_MaxSpeed, m_MaxSpeed);
+        // add, clamp
+        m_Speed += m_MoveValue.axis.magnitude * m_Sensitivity;
+        m_Speed = Mathf.Clamp(m_Speed, -m_MaxSpeed, m_MaxSpeed);
 
-            // orientation
-            movement += orientation * (m_Speed * Vector3.forward);
-        }
+        // orientation
+        movement += orientation * (m_Speed * Vector3.forward);
 
         // grativty
         movement.y -= m_Gravity * Time.deltaTime;
-        //}
+
         // apply
         m_CharacterController.Move(movement * Time.deltaTime);
     }
@@ -99,33 +104,33 @@ public class VRController : MonoBehaviour
         Vector3 orientationeuler = new Vector3(0, m_Head.eulerAngles.y + rotation, 0);
         return Quaternion.Euler(orientationeuler);
     }
-    
+
     private void SnapRotation()
     {
         float snapValue = 0f;
 
         //if (m_RotatePress.GetStateDown(SteamVR_Input_Sources.LeftHand))
         //{
-            //snapValue = -Mathf.Abs(m_RotateIncrement);
+        //snapValue = -Mathf.Abs(m_RotateIncrement);
         //}
 
         //if (m_RotatePress.GetStateDown(SteamVR_Input_Sources.RightHand))
         //{
-            //snapValue = Mathf.Abs(m_RotateIncrement);
+        //snapValue = Mathf.Abs(m_RotateIncrement);
         //}
 
         if (m_SnapRotateButton.GetStateDown(SteamVR_Input_Sources.LeftHand))
         {
-            Quaternion rotation = CalculateOrientation();
-            if (m_MoveValue.axis.x <= 0)
+            if (m_RotateValue.axis.x <= 0)
             {
                 snapValue = -Mathf.Abs(m_RotateIncrement);
-            } else
+            }
+            else
             {
                 snapValue = Mathf.Abs(m_RotateIncrement);
-
-            }  
+            }
         }
-        transform.RotateAround(m_Head.position, Vector3.up, snapValue);
+
+        transform.RotateAround(SteamVR_Render.Top().head.position, Vector3.up, snapValue);
     }
 }

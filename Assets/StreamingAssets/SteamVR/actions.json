@@ -37,13 +37,18 @@
       "type": "boolean"
     },
     {
-      "name": "/actions/default/in/TouchPadPosition",
+      "name": "/actions/default/in/TouchPadPositionLeft",
       "type": "vector2",
       "requirement": "mandatory"
     },
     {
       "name": "/actions/default/in/SnapTurnButton",
       "type": "boolean",
+      "requirement": "mandatory"
+    },
+    {
+      "name": "/actions/default/in/TouchPadPositionRight",
+      "type": "vector2",
       "requirement": "mandatory"
     },
     {
